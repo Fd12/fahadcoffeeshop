@@ -12,6 +12,8 @@ class UserSignup(forms.ModelForm):
 		}
 
 
-class UserLogin (form.Form):
+class UserLogin (forms.ModelForm):
 	username = forms.CharField(required=True)
 	password = forms.CharField(required=True, widget=forms.PasswordInput())
+
+

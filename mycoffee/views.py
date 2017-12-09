@@ -9,7 +9,7 @@ def usersignup(request):
 	context['form'] = form
 	if request.method == ' POST':
 		form = UserSignup(request.POST)
-		if form.is_valid()
+		if form.is_valid():
 			user = form.save()
 			username = user.username
 			password = user.password
