@@ -3,6 +3,27 @@ from .forms import UserSignup, UserLogin
 from django.contrib.auth import authenticate, login, logout
 from .forms import CoffeeForm
 from decimal import Decimal
+from .models import Coffee
+from django.http import Http404
+
+def coffee_list(request):
+	if not request.user.is_authenticated():
+		return redirect("mycoffee:login")
+
+
+	coffee_list = Coffee.objects.filter(user=request.user)
+	return render(request, 'coffee_list.html', {'coffee_list':coffee_list})
+
+
+def coffee_detail(request, coffee_id):
+	if not request.user.is_authenticated():
+		return redirect ("mycoffee:login")
+
+	coffee = Coffee.objects.get(id=coffee_id)
+	if not(request.user == coffee.user or request.user.is_superuser or request.user.us_staff):
+		raise Http404
+
+	return render(request, 'coffee_detail.html', {'coffee': coffee}) 
 
 
 def usersignup(request):
@@ -119,4 +140,7 @@ def ajax_price(request):
 
 
 	return JsonResponse(rount(total_price,3), safe=False)
+
+
+
 
