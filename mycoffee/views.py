@@ -54,4 +54,35 @@ def userlogout(request):
 	logout(request)
 	return redirect ("/")
 
-# Create your views here.
+def coffee_price(instance):
+	total_price = instance.bean.price + instance.roast.price + (instance.espresso_shots*Decimal(0.250))
+	if instance.steamed_milk:
+		total_price+=Decimal(.100)
+	if instance.powder.all().count()>0:
+		for powder in instance.powders.all():
+			total_price+=powder.price
+	if instance.syrup.all().count()>0:
+		for syrup in instance.syrups.all():
+			total_price+=syrup.price
+	return total_price
+
+
+def coffee_create(request):
+	context = {}
+	if not request.user.is_authenticated():
+		return redirect("mycoffee:login")
+	form = CoffeeForm()
+	if request_method == "POST"
+		form = CoffeeForm(request.POST)
+		if form.is_valid()
+			coffee=form.save(commit=False)
+			coffee.user = request.user
+			coffee.save()
+			form.save_m2m()
+			coffee.price = coffee_price(coffee)
+			coffee.save()
+			return redirect('/')
+
+	context['form'] = form
+	return render (request, 'create_coffee.html', context)
+

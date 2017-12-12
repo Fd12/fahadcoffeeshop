@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+	<form action="{url 'mycoffee:create' %} method = "post">
+		{% {% csrf_token %}
+		{{forms|crispy}}
+		
+
+		<input class = "btn btn-primary" type="submit" value="Create Coffee">
+	</form> 
+
+{% endblock %}
+
+
