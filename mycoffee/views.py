@@ -88,14 +88,14 @@ def coffee_price(instance):
 	return total_price
 
 
-def coffee_create(request):
+def create_coffee(request):
 	context = {}
 	if not request.user.is_authenticated():
 		return redirect("mycoffee:login")
 	form = CoffeeForm()
-	if request_method == "POST"
+	if request_method == "POST":
 		form = CoffeeForm(request.POST)
-		if form.is_valid()
+		if form.is_valid():
 			coffee=form.save(commit=False)
 			coffee.user = request.user
 			coffee.save()
