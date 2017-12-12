@@ -86,3 +86,37 @@ def coffee_create(request):
 	context['form'] = form
 	return render (request, 'create_coffee.html', context)
 
+
+def ajax_price(request):
+	total_price = Decimal(0)
+
+	bean_id = request.GET.get('bean')
+	if bean_id:
+		total_price += Bean.objects.get(id=bean_id).price
+
+	roast_id = request.GET.get(roast)
+	if roast_id:
+		total_price += Roast.objects.get(id=roast_id).price
+
+	syrups = json.loads(request.GET.get('syrups'))
+	if len(syrups)>0:
+		for syrup_id in syrups:
+			total_price += syrup.objects.get(id=syrup_id).price
+
+
+	powders = json.loads(request.GET.get('powders'))
+	if len(powders)>0:
+		for powder_id in powders:
+			total_price += Powder.objects.get(id=powder_id).price
+
+	milk = request.GET,get('milk')
+	if milk=='true':
+		total_price += Decimal(0.100)
+
+	shots = request.GET.get('espresso_shots')
+	if shots:
+		total_price += (int(shots)*Decimal(0.250))
+
+
+	return JsonResponse(rount(total_price,3), safe=False)
+
