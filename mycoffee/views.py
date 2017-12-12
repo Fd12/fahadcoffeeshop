@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import UserSignup, UserLogin
 from django.contrib.auth import authenticate, login, logout
+from .forms import CoffeeForm
+from decimal import Decimal
 
 
 def usersignup(request):
